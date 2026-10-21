@@ -29,8 +29,36 @@ def test_error_goes_to_stderr_after_earlier_output(tmp_path: Path):
     assert "Traceback" not in completed.stderr
 
 
+def test_check_parses_without_executing(tmp_path: Path):
+    program = tmp_path / "runtime-error.slop"
+    program.write_text("hallucinate(“before”)✨\nhallucinate(missing)✨\n", encoding="utf-8")
+    for args in (("--check", str(program)), (str(program), "--check")):
+        completed = run_cli(*args)
+        assert (completed.returncode, completed.stdout, completed.stderr) == (0, "", "")
+
+
+def test_check_reports_lexical_and_syntax_errors(tmp_path: Path):
+    program = tmp_path / "invalid.slop"
+    for source, diagnostic in (
+        ("@", "SlopLang lexical error at line 1: unexpected character '@'\n"),
+        (
+            "slop x✨",
+            "SlopLang syntax error at line 1: "
+            "expected '=' after variable name, an initializer is required, found '✨'\n",
+        ),
+    ):
+        program.write_text(source, encoding="utf-8")
+        completed = run_cli("--check", str(program))
+        assert (completed.returncode, completed.stdout, completed.stderr) == (1, "", diagnostic)
+
+
 def test_missing_file_and_usage():
     assert run_cli().returncode == 2
     missing = run_cli(str(ROOT / "nope.slop"))
     assert missing.returncode == 2
     assert "could not read" in missing.stderr
+    assert run_cli("--check", str(ROOT / "nope.slop")).returncode == 2
+    for args in (("--check",), ("--check", "--check", "file.slop"), ("--validate", "file.slop")):
+        completed = run_cli(*args)
+        assert completed.returncode == 2
+        assert "usage:" in completed.stderr

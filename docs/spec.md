@@ -6,6 +6,8 @@ Files use the `.slop` extension and run with:
 uv run sloperator.py path/to/program.slop
 ```
 
+Use `uv run sloperator.py --check path/to/program.slop` to check lexical and syntax errors without executing the program. A successful check produces no output and exits with status `0`; errors are written to stderr and exit with status `1`.
+
 ## Example
 
 ```slop
