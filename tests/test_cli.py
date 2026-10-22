@@ -29,6 +29,15 @@ def test_error_goes_to_stderr_after_earlier_output(tmp_path: Path):
     assert "Traceback" not in completed.stderr
 
 
+def test_division_by_zero_reports_runtime_error_without_traceback(tmp_path: Path):
+    program = tmp_path / "division.slop"
+    program.write_text("hallucinate(1 / 0)✨\n", encoding="utf-8")
+    completed = run_cli(str(program))
+    assert completed.returncode == 1
+    assert completed.stdout == ""
+    assert completed.stderr == "SlopLang runtime error at line 1: division by zero\n"
+
+
 def test_check_parses_without_executing(tmp_path: Path):
     program = tmp_path / "runtime-error.slop"
     program.write_text("hallucinate(“before”)✨\nhallucinate(missing)✨\n", encoding="utf-8")

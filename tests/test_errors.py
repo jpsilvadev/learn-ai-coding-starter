@@ -52,6 +52,7 @@ CASES = [
     ),
     ("clanker one(a) {\n}\none()✨", "runtime", 3, "clanker 'one' expects 1 argument, got 0"),
     ("slop x = 1✨\nx(2)✨", "runtime", 2, "can only call clankers, got number"),
+    ("hallucinate(1 / 0)✨", "runtime", 1, "division by zero"),
     (
         "clanker forever(n) {\n    ship forever(n + 1)✨\n}\nforever(0)✨",
         "runtime",
