@@ -25,7 +25,7 @@ CASES = [
         "clanker outer() {\n    clanker inner() {\n    }\n}",
         "syntax",
         2,
-        "clanker declarations are only allowed at the top level",
+        "clanker declarations are only allowed at the top level, found 'clanker'",
     ),
     (
         "slop x✨",
