@@ -74,6 +74,7 @@ def test_tab_escape_produces_tab_character():
         ("a & b", 1, "unexpected character '&', did you mean '&&'?"),
         ("a | b", 1, "unexpected character '|', did you mean '||'?"),
         ("@", 1, "unexpected character '@'"),
+        ("— a comment\n@", 2, "unexpected character '@'"),
     ],
 )
 def test_lexical_errors(source: str, line: int, message: str):
