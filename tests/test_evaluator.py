@@ -15,6 +15,12 @@ def fails(source: str) -> str:
     return result.stderr.rstrip("\n")
 
 
+def test_hallucinate_accepts_any_number_of_arguments():
+    assert run("hallucinate()✨") == "\n"
+    assert run("hallucinate(1)✨") == "1\n"
+    assert run("clanker f() {\n}\nhallucinate(“a”, 1, ✅, f())✨") == "a 1 ✅ nil\n"
+
+
 @pytest.mark.parametrize(
     ("expression", "expected"),
     [
