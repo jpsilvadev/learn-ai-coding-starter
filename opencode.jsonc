@@ -11,6 +11,42 @@
   "watcher": {
     "ignore": ["logs/**"]
   },
+  "mcp": {
+    "servers": {
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp"
+      },
+      "notion": {
+        "type": "remote",
+        "url": "https://mcp.notion.com/mcp",
+        "disabled": true
+      },
+      "chrome-devtools": {
+        "type": "local",
+        "command": [
+          "bunx",
+          "--bun",
+          "chrome-devtools-mcp@latest",
+          "--isolated",
+          "--executablePath",
+          "/home/jsilva/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome"
+        ]
+      },
+      "playwright": {
+        "type": "local",
+        "disabled": true,
+        "command": [
+          "bunx",
+          "--bun",
+          "@playwright/mcp@0.0.80",
+          "--isolated",
+          "--browser",
+          "chromium"
+        ]
+      }
+    }
+  },
   "permissions": [
     {
       "action": "shell",
