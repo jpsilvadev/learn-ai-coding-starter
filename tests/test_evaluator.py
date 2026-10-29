@@ -15,6 +15,10 @@ def fails(source: str) -> str:
     return result.stderr.rstrip("\n")
 
 
+def test_variable_names_may_contain_digits():
+    assert run("slop score2 = 40✨ score2 = score2 + 2✨ hallucinate(score2)✨") == "42\n"
+
+
 def test_hallucinate_accepts_any_number_of_arguments():
     assert run("hallucinate()✨") == "\n"
     assert run("hallucinate(1)✨") == "1\n"

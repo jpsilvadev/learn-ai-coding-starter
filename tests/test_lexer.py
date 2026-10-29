@@ -47,6 +47,15 @@ def test_hallucinate_is_an_identifier_not_a_keyword():
     assert tokenize("hallucinate")[0].type is TokenType.IDENTIFIER
 
 
+def test_identifier_may_contain_digits_but_not_start_with_one():
+    tokens = tokenize("score2 _x9")
+    assert [(t.type, t.lexeme) for t in tokens[:2]] == [
+        (TokenType.IDENTIFIER, "score2"),
+        (TokenType.IDENTIFIER, "_x9"),
+    ]
+    assert types("2score") == [TokenType.NUMBER, TokenType.IDENTIFIER, TokenType.EOF]
+
+
 def test_loadbearing_is_a_keyword():
     assert tokenize("loadbearing LIMIT = 100✨")[0].type is TokenType.LOADBEARING
 
