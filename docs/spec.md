@@ -85,6 +85,8 @@ hallucinate(LIMIT)✨
 
 Assignment is a statement, not an expression: `name = expression✨`. It updates the nearest existing mutable `slop` binding. Assigning to `loadbearing` is a runtime error: `cannot assign to loadbearing 'LIMIT'`. Reading or assigning an undefined name is a runtime error.
 
+`name += expression✨` is compound assignment. The right-hand expression is evaluated first, then added to the variable's current value with the same rules as `+` (two numbers or two strings; anything else is a runtime error, `operands of '+=' must both be numbers or both be strings, got number and string`). The result updates the nearest existing mutable binding, so `slop n = 2✨ n += 3 * 4✨` leaves `n` as `14`. Undefined names and `loadbearing` or `clanker` bindings are runtime errors, as for `=`.
+
 Every brace block is a lexical scope. Assignment searches the current scope, then each enclosing scope.
 
 ## Control Flow
@@ -169,7 +171,7 @@ variableDecl   -> ( "slop" | "loadbearing" ) IDENTIFIER "=" expression "✨" ;
 
 statement      -> assignStmt | ifStmt | loopStmt | returnStmt
                 | block | expressionStmt ;
-assignStmt     -> IDENTIFIER "=" expression "✨" ;
+assignStmt     -> IDENTIFIER ( "=" | "+=" ) expression "✨" ;
 ifStmt         -> "vibe" expression block ( "nah" block )? ;
 loopStmt       -> "ralph" expression block ;
 returnStmt     -> "ship" expression "✨" ;
